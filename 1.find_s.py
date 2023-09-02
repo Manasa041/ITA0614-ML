@@ -1,21 +1,21 @@
 import csv
-a = []
-with open('enjoysport.csv', 'r') as csvfile:
-    for row in csv.reader(csvfile):
-        a.append(row)
-    print(a)
-print("\n The total number of training instances are : ",len(a))
-num_attribute = len(a[0])-1
-print("\n The initial hypothesis is : ")
-hypothesis = ['0']*num_attribute
-print(hypothesis)
-for i in range(0, len(a)):
- if a[i][num_attribute] == 'yes':
-  for j in range(0, num_attribute):
-      if hypothesis[j] == '0' or hypothesis[j] == a[i][j]:
-          hypothesis[j] = a[i][j]
-      else:
-          hypothesis[j] = '?'
- print("\n The hypothesis for the training instance {} is :\n" .format(i+1),hypothesis)
-print("\n The Maximally specific hypothesis for the training instance is ")
-print(hypothesis)
+def find_s(training_data):
+    positive_examples = [example for example in training_data if example[-1] == 'Yes']
+    hypothesis = positive_examples[0][:-1]
+    
+    for instance in positive_examples:
+        for i in range(len(hypothesis)):
+            if hypothesis[i] != instance[i]:
+                hypothesis[i] = '?'
+    
+    return hypothesis
+dataset_path = "C:/Users/Acer/Desktop/ML/enjoysport.csv"
+
+training_data = []
+with open(dataset_path, 'r') as file:
+    csv_reader = csv.reader(file)
+    for row in csv_reader:
+        training_data.append(row)
+
+hypothesis = find_s(training_data)
+print("Final Hypothesis:", hypothesis)
